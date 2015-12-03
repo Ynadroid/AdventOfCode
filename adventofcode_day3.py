@@ -1,13 +1,5 @@
 import sys
 
-def isInList(x,y,roboturn):
-	#print('Is',x,y,'in list')
-	for i, t in enumerate(coordlist):
-		if t[0] == x and t[1] == y:
-			#print("Found",x,y)
-			return True
-	return False
-
 santax = 0
 santay = 0
 
@@ -16,7 +8,9 @@ roboy = 0
 
 roboturn = False
 
-coordlist = [(santax,santay)]
+coordlist = set()
+coordlist.add((santax,santay))
+print(coordlist)
 
 inputfile = open("adventofcode_day3_input.txt");
 for line in inputfile:
@@ -41,13 +35,13 @@ for line in inputfile:
 		if roboturn:
 			robox = robox + x
 			roboy = roboy + y
-			if not isInList(robox,roboy,roboturn):
-				coordlist.append((robox,roboy))
+			if (robox,roboy) not in coordlist:
+				coordlist.add((robox,roboy))
 		else:
 			santax = santax + x
 			santay = santay + y
-			if not isInList(santax,santay,roboturn):
-				coordlist.append((santax,santay))
+			if (santax,santay) not in coordlist:
+				coordlist.add((santax,santay))
 				
 		roboturn = not roboturn
 
