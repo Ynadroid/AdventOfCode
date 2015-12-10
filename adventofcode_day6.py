@@ -3,24 +3,27 @@
 import re
 
 def turnOn(x,y):
-	if not lightgrid[x][y]:
-		toggleLight(x,y)
+	addBrightness(x,y,1)
 	
 def turnOff(x,y):
-	if lightgrid[x][y]:
-		toggleLight(x,y)
+	addBrightness(x,y,-1)
 
 def toggleLight(x,y):
+	addBrightness(x,y,2)
+
+def addBrightness(x,y,bright):
 	global turnoffcount
 	global turnoncount
-	if lightgrid[x][y]:
-		#print(x,',',y,'turned off')
-		turnoffcount += 1
-	else:
-		#print(x,',',y,'turned on')
-		turnoncount += 1
 	
-	lightgrid[x][y] = not lightgrid[x][y]
+	if bright > 0:
+		turnoncount += bright
+	elif bright < 0:
+		turnoffcount += bright
+	
+	lightgrid[x][y] += bright
+	if lightgrid[x][y] < 0:
+		lightgrid[x][y] = 0
+		turnoffcount -= bright
 
 def applyCommand(cmd, bx, by, ex, ey):
 	for x in range(bx,ex+1):
@@ -60,6 +63,13 @@ def countLitLights():
 				count += 1
 	print(count, "lights are lit");
 
+def countBrightness():
+	count = 0
+	for x in range(1000):
+		for y in range(1000):
+			count += lightgrid[x][y]
+	print("Brightness:",count);
+
 # grid initialization
 turnoncount = 0
 turnoffcount = 0
@@ -67,7 +77,7 @@ lightgrid = []
 for x in range(1000):
 	lightgridcolumn = []
 	for y in range(1000):
-		lightgridcolumn.append(False)
+		lightgridcolumn.append(0)
 	lightgrid.append(lightgridcolumn)
 
 #commandInterpreter('turn on 0,0 through 999,999')
@@ -79,6 +89,14 @@ for x in range(1000):
 #commandInterpreter('turn off 499,499 through 500,500')
 #countLitLights()
 
+#commandInterpreter('turn on 0,0 through 0,0')
+#countLitLights()
+#countBrightness()
+
+#commandInterpreter('toggle 0,0 through 999,999')
+#countLitLights()
+#countBrightness()
+
 cmdcount = 0
 with open('adventofcode_day6_input.txt','r') as f:
 	for input in f.readlines():
@@ -87,6 +105,7 @@ with open('adventofcode_day6_input.txt','r') as f:
 		cmdcount += 1
 
 countLitLights()
+countBrightness()
 print('Processed',cmdcount,'commands')
-print('Turned on',turnoncount,'times')
-print('Turned off',turnoffcount,'times')
+print('Increased brightness by',turnoncount)
+print('Decreased brightness by',turnoffcount)
