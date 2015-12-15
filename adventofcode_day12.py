@@ -2,7 +2,33 @@
 
 import json
 
-with open('') as f:
+def analyzeObject(object):
+	count = 0
+	if type(object) is dict:
+		for k,v in object.items():
+			count += analyzeObject(v)
+	elif type(object) is list:
+		for v in object:
+			count += analyzeObject(v)
+	elif type(object) is int:
+		#print("INT:",object)
+		count += object
+	# elif type(object) is str and object == "red":
+		# print("STR:",object)
+	return count
+
+def countInJson(jsoncontent):
+	totalcount = 0
+	for k,v in jsoncontent.items():
+		totalcount += analyzeObject(v)
+		print('Inter count:',totalcount)
+	return totalcount
+
+with open('adventofcode_day12_input.txt') as f:
 	input = [line.strip() for line in f]
 
-json.loads(input)
+loadedjson = json.loads(input[0])
+
+# print(json.dumps(loadedjson, sort_keys = True, indent=4, separators=(',',': ')))
+
+print(countInJson(loadedjson))

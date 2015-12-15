@@ -54,6 +54,17 @@ def checkPassword(array):
 	#print(rule1, rule2, rule3)
 	return (rule1 and rule2 and rule3)
 
+def generatePassword(string):
+	oldpassword = string
+	array = stringToNumericArray(oldpassword)
+	if checkPassword(array):
+		array = increment(array)
+	
+	while not checkPassword(array):
+		array = increment(array)
+	
+	return numericArrayToString(array)
+
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 posinalphabet = {}
 letterpos = {}
@@ -65,11 +76,9 @@ for letter in alphabet:
 	pos += 1
 
 oldpassword = 'hepxcrrq'
-#oldpassword = 'ghijklmn'
-array = stringToNumericArray(oldpassword)
-print(array)
-while not checkPassword(array):
-	array = increment(array)
-	#print(array)
+newpassword = generatePassword(oldpassword)
+print('Next password from '+oldpassword+' is:',newpassword)
 
-print('Next password is:',numericArrayToString(array))
+oldpassword = newpassword
+newpassword = generatePassword(oldpassword)
+print('Next password from '+oldpassword+' is:',newpassword)
