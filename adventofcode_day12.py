@@ -2,19 +2,24 @@
 
 import json
 
-def analyzeObject(object):
+def analyzeObject(object, ignorewhatisred = False):
 	count = 0
 	if type(object) is dict:
 		for k,v in object.items():
-			count += analyzeObject(v)
+			ret = analyzeObject(v, True)
+			if ret != None:
+				count += ret
+			else:
+				print("Red element")
+				return 0
 	elif type(object) is list:
 		for v in object:
-			count += analyzeObject(v)
+			count += analyzeObject(v, False)
 	elif type(object) is int:
 		#print("INT:",object)
 		count += object
-	# elif type(object) is str and object == "red":
-		# print("STR:",object)
+	elif type(object) is str and ignorewhatisred and object == "red":
+		return None
 	return count
 
 def countInJson(jsoncontent):
