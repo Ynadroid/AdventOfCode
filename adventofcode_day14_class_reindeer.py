@@ -10,12 +10,22 @@ class Reindeer:
 		self.speedtimeselpased = 0
 		self.resttimeelapsed = 0
 		self.distance = 0
+		self.points = 0
 	
 	def __repr__(self):
-		return self.name+' at '+str(self.distance)+' km'
+		return self.name+' at '+str(self.distance)+' km with '\
+		+str(self.points)+' points'
 		
 	def __str__(self):
-		return self.name+' at '+str(self.distance)+' km'
+		return self.name+' at '+str(self.distance)+' km with '\
+		+str(self.points)+' points'
+	
+	def restart(self):
+		print('Restarting',self.name)
+		self.speedtimeselpased = 0
+		self.resttimeelapsed = 0
+		self.points = 0
+		self.distance = 0
 	
 	def tick(self):
 		if self.speedtimeselpased == self.speedtime:
@@ -28,4 +38,15 @@ class Reindeer:
 		if self.speedtimeselpased < self.speedtime:
 			self.speedtimeselpased += 1
 			self.distance += self.speed
+	
+	def addOnePoint(self):
+		self.points += 1
 		
+	def getDistance(self):
+		return self.distance
+	
+	def getPoints(self):
+		return self.points
+	
+	def get(self, func):
+		return func(self)
