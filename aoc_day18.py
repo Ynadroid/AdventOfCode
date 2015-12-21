@@ -51,19 +51,29 @@ def countOnNeighbors(x,y):
 	return count
 
 def defineNewState(x,y):
+	state = 0
 	if lightsgrid[x][y] == 1:
 		# light is on
 		onNeighbors = countOnNeighbors(x,y)
 		if onNeighbors == 2 or onNeighbors == 3:
-			return 1
+			state = 1
 		else:
-			return 0
+			state = 0
 	elif lightsgrid[x][y] == 0:
 		# light is off
 		if 3 == countOnNeighbors(x,y):
-			return 1
+			state = 1
 		else:
-			return 0
+			state = 0
+			
+	if x == 0:
+		if y == 0 or y == len(lightsgrid[x])-1:
+			state = 1
+	elif x == len(lightsgrid)-1:
+		if y == 0 or y == len(lightsgrid[x])-1:
+			state = 1
+		
+	return state
 	
 def doOneStep():
 	newlightsgrid = []
@@ -83,7 +93,8 @@ def countOnLights():
 	
 lightsgrid = []
 
-with open('aoc_day18_input.txt') as f:
+with open('aoc_day18_p2_input.txt') as f:
+# with open('aoc_day18_input.txt') as f:
 # with open('aoc_day18_test_input.txt') as f:
 	input = [line.strip() for line in f]
 	
